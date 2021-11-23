@@ -46,3 +46,22 @@ foreach (Article article in res)
     Console.WriteLine($"\t{article.Id}");
 
 
+foreach (string lang in new List<string> { "en", "fr" })
+{
+    Console.WriteLine();
+    Console.WriteLine($"[Search2] Searching '{lang}' content for term : {term}");
+
+    res = session.Query<Search2.Entry, Search2>()
+                                .Search(x => x.Text[lang], term)
+                                .ProjectInto<Article>()
+                                .ToList();
+
+    if (res.Count == 0)
+        Console.WriteLine("\tNo results");
+    foreach (Article article in res)
+        Console.WriteLine($"\t{article.Id}");    
+}
+
+
+
+
