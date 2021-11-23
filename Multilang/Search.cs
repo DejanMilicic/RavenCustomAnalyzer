@@ -9,19 +9,17 @@ public class Search : AbstractIndexCreationTask<Article>
         public string Text_en { get; set; }
 
         public string Text_fr { get; set; }
+
+        public Dictionary<string, object> Text { get; set; }
     }
 
     public Search()
     {
         Map = articles => from article in articles
-                          select new
-                          {
-                              _ = CreateField(
-                                      /*name:*/ "Text_" + article.Language.ToLower(),
-                                      /*value:*/ new System.Object[] { article.Text },
-                                      /*stored:*/ false,
-                                      /*analyzed:*/ true)
-                          };
+            select new
+            {
+                _ = CreateField("Text_" + article.Language.ToLower(), article.Text)
+            };
 
         AnalyzersStrings = new Dictionary<string, string>
         {

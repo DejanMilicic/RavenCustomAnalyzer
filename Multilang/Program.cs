@@ -19,49 +19,36 @@ var session = DocumentStoreHolder.Store.OpenSession();
 
 string term = "car";
 
-Console.WriteLine($"Searching French content for term : {term}" );
-
-var res = session.Query<Search.Entry, Search>()
-                            .Search(x => x.Text_fr, term)
-                            .ProjectInto<Article>()
-                            .ToList();
-
-if (res.Count == 0)
-    Console.WriteLine("\tNo results");
-foreach (Article article in res)
-    Console.WriteLine($"\t{article.Id}");
+DisplayResults("fr",
+    session.Query<Search.Entry, Search>()
+                                .Search(x => x.Text_fr, term)
+                                .ProjectInto<Article>()
+                                .ToList());
 
 
-Console.WriteLine();
-Console.WriteLine($"Searching English content for term : {term}" );
+DisplayResults("en",
+    session.Query<Search.Entry, Search>()
+                                .Search(x => x.Text_en, term)
+                                .ProjectInto<Article>()
+                                .ToList());
 
-res = session.Query<Search.Entry, Search>()
-                            .Search(x => x.Text_en, term)
-                            .ProjectInto<Article>()
-                            .ToList();
-
-if (res.Count == 0)
-    Console.WriteLine("\tNo results");
-foreach (Article article in res)
-    Console.WriteLine($"\t{article.Id}");
+foreach (string lang in new List<string> { "fr", "en" })
+    DisplayResults(lang,
+        session.Query<Search.Entry, Search>()
+                                    .Search(x => x.Text[lang], term)
+                                    .ProjectInto<Article>()
+                                    .ToList());
 
 
-foreach (string lang in new List<string> { "en", "fr" })
+void DisplayResults(string lang, List<Article> articles)
 {
     Console.WriteLine();
     Console.WriteLine($"[Search2] Searching '{lang}' content for term : {term}");
 
-    res = session.Query<Search2.Entry, Search2>()
-                                .Search(x => x.Text[lang], term)
-                                .ProjectInto<Article>()
-                                .ToList();
-
-    if (res.Count == 0)
+    if (articles.Count == 0)
         Console.WriteLine("\tNo results");
-    foreach (Article article in res)
-        Console.WriteLine($"\t{article.Id}");    
+    foreach (Article article in articles)
+        Console.WriteLine($"\t{article.Id}");
 }
-
-
 
 
