@@ -1,26 +1,25 @@
-﻿using Raven.Client.Documents;
+﻿namespace Multilang;
+
+using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 
-namespace Multilang
+public static class DocumentStoreHolder
 {
-    public static class DocumentStoreHolder
-    {
-        private static readonly Lazy<IDocumentStore> LazyStore =
-            new Lazy<IDocumentStore>(() =>
+    private static readonly Lazy<IDocumentStore> LazyStore =
+        new Lazy<IDocumentStore>(() =>
+        {
+            IDocumentStore store = new DocumentStore
             {
-                IDocumentStore store = new DocumentStore
-                {
-                    Urls = new[] { "http://127.0.0.1:8080" },
-                    Database = "d2"
-                };
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "articles"
+            };
 
-                store.Initialize();
+            store.Initialize();
 
-                IndexCreation.CreateIndexes(typeof(Program).Assembly, store);
+            IndexCreation.CreateIndexes(typeof(Program).Assembly, store);
 
-                return store;
-            });
+            return store;
+        });
 
-        public static IDocumentStore Store => LazyStore.Value;
-    }
+    public static IDocumentStore Store => LazyStore.Value;
 }

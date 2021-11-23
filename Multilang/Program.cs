@@ -3,19 +3,7 @@ using Raven.Client.Documents;
 
 var session = DocumentStoreHolder.Store.OpenSession();
 
-//session.Store(new Article
-//{
-//    Text = "This is a text about car",
-//    Language = "en"
-//});
-
-//session.Store(new Article
-//{
-//    Text = "Je n'ai pas faim car j'ai pris le petit déjeuner",
-//    Language = "fr"
-//});
-
-//session.SaveChanges();
+Seed();
 
 string term = "car";
 
@@ -49,6 +37,29 @@ void DisplayResults(string lang, List<Article> articles)
         Console.WriteLine("\tNo results");
     foreach (Article article in articles)
         Console.WriteLine($"\t{article.Id}");
+}
+
+void Seed()
+{
+    session.Store(new Article
+    {
+        Text = "This is a text about car",
+        Language = "en"
+    });
+
+    session.Store(new Article
+    {
+        Text = "Je n'ai pas faim car j'ai pris le petit déjeuner",
+        Language = "fr"
+    });
+
+    session.Store(new Article
+    {
+        Text = "The quick brown fox jumps over the lazy dog or a car",
+        Language = ""
+    });
+
+    session.SaveChanges();
 }
 
 

@@ -16,9 +16,11 @@ public class Search : AbstractIndexCreationTask<Article>
     public Search()
     {
         Map = articles => from article in articles
+            let lang = string.IsNullOrWhiteSpace(article.Language) ?
+                             "en" : article.Language.ToLower()
             select new
             {
-                _ = CreateField("Text_" + article.Language.ToLower(), article.Text)
+                _ = CreateField("Text_" + lang, article.Text)
             };
 
         AnalyzersStrings = new Dictionary<string, string>
