@@ -1,4 +1,7 @@
-﻿namespace Multilang;
+﻿using Raven.Client.Documents.Indexes.Analysis;
+using Raven.Client.ServerWide.Operations.Analyzers;
+
+namespace Multilang;
 
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
@@ -15,6 +18,14 @@ public static class DocumentStoreHolder
             };
 
             store.Initialize();
+
+            // https://github.com/ravendb/lucenenet/tree/ravendb/v5.2/src/contrib/Analyzers/Fr
+            store.Maintenance.Server.Send(new PutServerWideAnalyzersOperation(
+                new AnalyzerDefinition
+                {
+                    Name = "FrenchAnalyzer",
+                    Code = File.ReadAllText(Path.Combine(new []{"..", "..", "..", "Lucene", "FrenchAnalyzer.cs" }))
+                }));
 
             IndexCreation.CreateIndexes(typeof(Program).Assembly, store);
 
