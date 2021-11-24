@@ -10,9 +10,6 @@ A sample project that demonstrates
 
 1. Start RavenDB
 2. Crate "articles" database 
-3. Go to Manage Server > Server-Wide Analyzers > Add a Server-Wide Custom Analyzer
-    - Analyzer Name : FrenchAnalyzer
-    - Code : Paste content of Multilang/Lucene/FrenchAnalyzer.cs
 
 ## When you run it
 1. Search index will be created
