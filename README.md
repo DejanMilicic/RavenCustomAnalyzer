@@ -10,7 +10,7 @@ A sample project that demonstrates
 
 1. Start RavenDB
 2. Crate "articles" database 
-3. Go to Settings > Custom Analyzers > Add a Database Custom Analyzer
+3. Go to Manage Server > Server-Wide Analyzers > Add a Server-Wide Custom Analyzer
     - Analyzer Name : FrenchAnalyzer
     - Code : Paste content of Multilang/Lucene/FrenchAnalyzer.cs
 
