@@ -1,5 +1,37 @@
-﻿using Multilang;
+﻿using Lucene.Net.Support;
+using Multilang;
+using Multilang.Phonetic;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Queries;
+
+//// Soundex
+
+//SoundexDemo.Seed();
+
+using var s = SoundexDemo.GertStore().OpenSession();
+
+//string name = "Ashcroft";
+string name = "Rupert";
+
+string sdx1 = Soundex.Compute(name);
+var names = s.Query<Person, People_BySoundex>()
+                    .ProjectInto<People_BySoundex.Entry>()
+                    .Where(x => x.Soudex == sdx1)
+                    .Select(x => x.Name)
+                    .ToList()
+    ;
+
+Console.WriteLine($"Name search for {name}:");
+Console.WriteLine();
+foreach (var n in names)
+{
+    Console.WriteLine(n);
+}
+
+return;
+
+
+////
 
 var session = DocumentStoreHolder.Store.OpenSession();
 
